@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailSenderImpl implements MailSender{
 
-	private static final String BIKE_TEAM_OFICIAL = "biketeamoficial@gmail.com";
+	private static final String BIKE_TEAM_OFICIAL = "writerlanddonotreplay@gmail.com";
 	
 	@Override
 	public void send(String title, String body, String to) throws SendMailException {
@@ -41,7 +41,7 @@ public class MailSenderImpl implements MailSender{
 
 
 			MimeMessage message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("writerlanddonotreplay@gmail.com"));
+			message.setFrom(new InternetAddress(BIKE_TEAM_OFICIAL));
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 			message.setSubject(title);
 	
