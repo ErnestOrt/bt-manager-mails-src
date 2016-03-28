@@ -1,6 +1,7 @@
 package org.ernest.applications.bt.manager.mails.ms.controllers;
 
 import org.ernest.applications.bt.manager.mails.ct.SendActivateInput;
+import org.ernest.applications.bt.manager.mails.ct.SendNewStageInput;
 import org.ernest.applications.bt.manager.mails.ct.SendRecoverInput;
 import org.ernest.applications.bt.manager.mails.ct.exceptions.SendMailException;
 import org.ernest.applications.bt.manager.mails.ms.services.MailSender;
@@ -29,6 +30,11 @@ public class MailsController {
 	public void sendRecover(@RequestBody SendRecoverInput sendRecoverInput) throws SendMailException {
 		String body = mailService.buildRecover(sendRecoverInput.getPass());
 		mailSender.send("Bike Team Account Recovery", body, sendRecoverInput.getEmail());
-		
+	}
+	
+	@RequestMapping("/sendnewstage")
+	public void sendNewStage(@RequestBody SendNewStageInput sendNewStageInput) throws SendMailException {
+		String body = mailService.buildNewStage(sendNewStageInput.getUserName(), sendNewStageInput.getTeamName(), sendNewStageInput.getStageName(), sendNewStageInput.getStageDate(), sendNewStageInput.getStageId());
+		mailSender.send("Bike Team New Stage", body, sendNewStageInput.getUserMail());
 	}
 }

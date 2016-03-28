@@ -15,7 +15,28 @@ public class MailServiceImpl implements MailService {
 	
 	
 	@Value("${url.bt.gui.activate.account}")
-	private String urlGuiActivateAccount; 
+	private String urlGuiActivateAccount;
+	
+	@Value("${url.bt.gui.stage}")
+	private String urlGuiStage;
+	
+	@Override
+	public String buildNewStage(String username, String teamname, String stagename, String stagedate, String stageId) throws SendMailException {
+		try{
+
+			String body = streamToString(this.getClass().getResourceAsStream("/templates/newstage.html"));
+			body = body.replaceAll("#username", username);
+			body = body.replaceAll("#teamname", teamname);
+			body = body.replaceAll("#stagename", stagename);
+			body = body.replaceAll("#stagedate", stagedate);
+			
+			body = body.replaceAll("#stageurl", urlGuiStage.replaceAll("#stageid", stageId));
+			return body;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SendMailException(e.getMessage());
+		}
+	}
 
 	@Override
 	public String buildActivate(String username, String token) throws SendMailException {
@@ -68,5 +89,5 @@ public class MailServiceImpl implements MailService {
         }
 
         return sb.toString();
-    }
+	}
 }
