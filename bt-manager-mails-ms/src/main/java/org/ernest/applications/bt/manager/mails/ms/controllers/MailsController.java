@@ -23,18 +23,18 @@ public class MailsController {
 	@RequestMapping("/sendactivate")
 	public void sendActivate(@RequestBody SendActivateInput sendActivateInput) throws SendMailException {
 		String body = mailService.buildActivate(sendActivateInput.getUserName(), sendActivateInput.getToken());
-		mailSender.send("Bike Team Account Activation", body, sendActivateInput.getUsermail());
+		mailSender.send("Sabati Account Activation", body, sendActivateInput.getUsermail());
 	}
 	
 	@RequestMapping("/sendrecover")
 	public void sendRecover(@RequestBody SendRecoverInput sendRecoverInput) throws SendMailException {
 		String body = mailService.buildRecover(sendRecoverInput.getPass());
-		mailSender.send("Bike Team Account Recovery", body, sendRecoverInput.getEmail());
+		mailSender.send("Sabati Account Recovery", body, sendRecoverInput.getEmail());
 	}
 	
 	@RequestMapping("/sendnewstage")
 	public void sendNewStage(@RequestBody SendNewStageInput sendNewStageInput) throws SendMailException {
 		String body = mailService.buildNewStage(sendNewStageInput.getUserName(), sendNewStageInput.getTeamName(), sendNewStageInput.getStageName(), sendNewStageInput.getStageDate(), sendNewStageInput.getStageId());
-		mailSender.send("Bike Team New Stage", body, sendNewStageInput.getUserMail());
+		mailSender.send("Sabati New Stage", body, sendNewStageInput.getUserMail());
 	}
 }
