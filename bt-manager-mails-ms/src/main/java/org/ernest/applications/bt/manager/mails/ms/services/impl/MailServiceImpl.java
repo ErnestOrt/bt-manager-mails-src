@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.ernest.applications.bt.manager.mails.ct.SendAddMembersInput;
 import org.ernest.applications.bt.manager.mails.ct.exceptions.SendMailException;
 import org.ernest.applications.bt.manager.mails.ms.services.MailService;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,9 @@ public class MailServiceImpl implements MailService {
 	
 	@Value("${url.bt.gui.stage}")
 	private String urlGuiStage;
+	
+	@Value("${url.bt.gui.team}")
+	private String urlGuiTeam;
 	
 	@Override
 	public String buildNewStage(String username, String teamname, String stagename, String stagedate, String stageId) throws SendMailException {
@@ -60,6 +64,21 @@ public class MailServiceImpl implements MailService {
 			body = body.replaceAll("#pass", pass);
 			return body;
 
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SendMailException(e.getMessage());
+		}
+	}
+
+	@Override
+	public String buildAddMember(SendAddMembersInput input) throws SendMailException {
+		try{
+			String body = streamToString(this.getClass().getResourceAsStream("/templates/addmember.html"));
+			body = body.replaceAll("#username", input.getUserNameInvited());
+			body = body.replaceAll("#teamname", input.getTeamName());
+			body = body.replaceAll("#userinvitation", input.getUserNameSender());
+			body = body.replaceAll("#teamurl", urlGuiTeam.replaceAll("#teamid", input.getTeamId()));
+			return body;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SendMailException(e.getMessage());
