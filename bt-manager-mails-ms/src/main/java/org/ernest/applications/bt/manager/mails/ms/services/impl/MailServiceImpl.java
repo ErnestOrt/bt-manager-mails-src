@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.ernest.applications.bt.manager.mails.ct.SendAddMembersInput;
+import org.ernest.applications.bt.manager.mails.ct.SendAddNoticeInput;
 import org.ernest.applications.bt.manager.mails.ct.exceptions.SendMailException;
 import org.ernest.applications.bt.manager.mails.ms.services.MailService;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MailServiceImpl implements MailService {
-	
 	
 	@Value("${url.bt.gui.activate.account}")
 	private String urlGuiActivateAccount;
@@ -77,6 +77,22 @@ public class MailServiceImpl implements MailService {
 			body = body.replaceAll("#username", input.getUserNameInvited());
 			body = body.replaceAll("#teamname", input.getTeamName());
 			body = body.replaceAll("#userinvitation", input.getUserNameSender());
+			body = body.replaceAll("#teamurl", urlGuiTeam.replaceAll("#teamid", input.getTeamId()));
+			return body;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SendMailException(e.getMessage());
+		}
+	}
+	
+	@Override
+	public String buildAddNotice(SendAddNoticeInput input) throws SendMailException {
+		try{
+			String body = streamToString(this.getClass().getResourceAsStream("/templates/newnotice.html"));
+			body = body.replaceAll("#username", input.getUserName());
+			body = body.replaceAll("#teamname", input.getTeamName());
+			body = body.replaceAll("#title", input.getTitle());
+			body = body.replaceAll("#content", input.getContent());
 			body = body.replaceAll("#teamurl", urlGuiTeam.replaceAll("#teamid", input.getTeamId()));
 			return body;
 		} catch (Exception e) {
