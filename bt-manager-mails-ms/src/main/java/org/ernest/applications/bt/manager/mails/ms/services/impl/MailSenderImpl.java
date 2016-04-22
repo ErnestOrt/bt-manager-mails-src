@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailSenderImpl implements MailSender{
 
-	private static final String BIKE_TEAM_OFICIAL = "sabaticiclismo@gmail.com";
+	private static final String BIKE_TEAM_OFICIAL = "sabatinotifications@gmail.com";
 	
 	@Override
 	public void send(String title, String body, String to) throws SendMailException {
